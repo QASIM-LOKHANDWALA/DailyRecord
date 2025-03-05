@@ -1,12 +1,40 @@
 import React from "react";
+import axios from "axios";
 import Filter from "../components/Filter";
 import CardContainer from "../components/CardContainer";
+import { useState, useEffect } from "react";
 
 const HomePage = () => {
+    const [notes, setNotes] = useState([]);
+    const [isLoading, setIsLoading] = useState(true);
+
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await axios.get(
+                    "http://127.0.0.1:8000/api/v1/notes/"
+                );
+                console.log("Fetched Data:", response.data);
+                setNotes(response.data);
+                setIsLoading(false);
+            } catch (error) {
+                console.error("Error fetching data:", error.message);
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
     return (
         <>
             <Filter />
-            <CardContainer />
+            {isLoading ? (
+                <h2>Loading notes...</h2>
+            ) : notes.length > 0 ? (
+                <CardContainer notes={notes} />
+            ) : (
+                <h2>No notes found</h2>
+            )}
         </>
     );
 };

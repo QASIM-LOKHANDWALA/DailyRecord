@@ -4,7 +4,8 @@ import { FaBookOpenReader } from "react-icons/fa6";
 import { MdMarkunread } from "react-icons/md";
 import { Link } from "react-router-dom";
 
-const NoteCard = ({ color }) => {
+const NoteCard = ({ note }) => {
+    const color = "blue";
     return (
         <div className="col-md-4 single-note-item all-category">
             <div className="card card-body">
@@ -21,7 +22,7 @@ const NoteCard = ({ color }) => {
                         className="note-title text-truncate w-75 mb-0"
                         data-noteheading="Book a Ticket for Movie"
                     >
-                        Book a Ticket for Movie{" "}
+                        {note.title}
                     </h5>
                 </Link>
                 <p className="note-date font-12 text-muted">11 March 2009</p>
@@ -30,9 +31,7 @@ const NoteCard = ({ color }) => {
                         className="note-inner-content text-muted"
                         data-notecontent="Blandit tempus porttitor aasfs. Integer posuere erat a ante venenatis."
                     >
-                        Lorem ipsum dolor, sit amet consectetur adipisicing
-                        elit. Saepe quaerat aspernatur dolore pariatur ullam
-                        tenetur consequuntur repellat sapiente illum vero!
+                        {note.body}
                     </p>
                 </div>
                 <div className="d-flex align-items-center">
@@ -46,6 +45,7 @@ const NoteCard = ({ color }) => {
                                 }}
                             />
                         </span>
+                        <small className="text-muted">{note.category}</small>
                     </Link>
 
                     <span className="mr-1">

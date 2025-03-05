@@ -1,5 +1,4 @@
 import React from "react";
-import NavBar from "./components/NavBar";
 import HomePage from "./pages/HomePage";
 import {
     createBrowserRouter,
@@ -24,7 +23,7 @@ const App = () => {
         )
     );
 
-    return <RouterProvider router={router}></RouterProvider>;
+    return <RouterProvider router={router} />;
 };
 
 export default App;
