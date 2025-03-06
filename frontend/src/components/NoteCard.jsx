@@ -3,35 +3,45 @@ import { FaBookOpenReader } from "react-icons/fa6";
 
 import { MdMarkunread } from "react-icons/md";
 import { Link } from "react-router-dom";
+import { formatDate } from "../utils/FormatDate";
 
 const NoteCard = ({ note }) => {
-    const color = "blue";
+    const color =
+        note.category == "BUSINESS"
+            ? "blue"
+            : note.category == "PERSONAL"
+            ? "green"
+            : "purple";
+    const body = `${note.body.split(" ").slice(0, 20).join(" ")} ...`;
+
     return (
         <div className="col-md-4 single-note-item all-category">
             <div className="card card-body">
                 <span
                     className="side-stick"
-                    style={{ backgroundColor: color }}
+                    style={{ backgroundColor: "black" }}
                 ></span>
                 <FaNoteSticky style={{ marginLeft: "auto", color: color }} />
                 <Link
-                    to="/notes-detail"
+                    to={`notes/${note.slug}`}
                     style={{ textDecoration: "none", color: "black" }}
                 >
                     <h5
                         className="note-title text-truncate w-75 mb-0"
-                        data-noteheading="Book a Ticket for Movie"
+                        data-noteheading={note.title}
                     >
                         {note.title}
                     </h5>
                 </Link>
-                <p className="note-date font-12 text-muted">11 March 2009</p>
+                <p className="note-date font-12 text-muted">
+                    {formatDate(note.updated)}
+                </p>
                 <div className="note-content">
                     <p
                         className="note-inner-content text-muted"
                         data-notecontent="Blandit tempus porttitor aasfs. Integer posuere erat a ante venenatis."
                     >
-                        {note.body}
+                        {body}
                     </p>
                 </div>
                 <div className="d-flex align-items-center">

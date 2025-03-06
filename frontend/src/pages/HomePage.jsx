@@ -29,7 +29,16 @@ const HomePage = () => {
         <>
             <Filter />
             {isLoading ? (
-                <h2>Loading notes...</h2>
+                <div className="text-center">
+                    <div
+                        className="spinner-border text-info"
+                        style={{
+                            height: "50px",
+                            width: "50px",
+                            margin: "10px",
+                        }}
+                    ></div>
+                </div>
             ) : notes.length > 0 ? (
                 <CardContainer notes={notes} />
             ) : (
