@@ -12,7 +12,22 @@ const NoteCard = ({ note }) => {
             : note.category == "PERSONAL"
             ? "green"
             : "purple";
-    const body = `${note.body.split(" ").slice(0, 20).join(" ")} ...`;
+
+    function formatBody() {
+        const bodyLength = 100;
+        const chars = note.body.split("");
+        let body = "";
+        if (chars.length < bodyLength) {
+            while (chars.length != bodyLength) {
+                chars.push(" ");
+            }
+            body = `${chars.join("")}`;
+        } else {
+            body = `${chars.slice(0, 100).join("")}...`;
+        }
+        console.log(body.length);
+        return body;
+    }
 
     return (
         <div className="col-md-4 single-note-item all-category">
@@ -41,11 +56,11 @@ const NoteCard = ({ note }) => {
                         className="note-inner-content text-muted"
                         data-notecontent="Blandit tempus porttitor aasfs. Integer posuere erat a ante venenatis."
                     >
-                        {body}
+                        {formatBody()}
                     </p>
                 </div>
                 <div className="d-flex align-items-center">
-                    <Link to="/notes-detail">
+                    <Link to={`notes/${note.slug}`}>
                         <span className="mr-1">
                             <MdMarkunread
                                 style={{
@@ -57,54 +72,6 @@ const NoteCard = ({ note }) => {
                         </span>
                         <small className="text-muted">{note.category}</small>
                     </Link>
-
-                    <span className="mr-1">
-                        <i className="fa fa-trash remove-note"></i>
-                    </span>
-                    <div className="ml-auto">
-                        <div className="category-selector btn-group">
-                            <a
-                                className="nav-link dropdown-toggle category-dropdown label-group p-0"
-                                data-toggle="dropdown"
-                                href="#"
-                                role="button"
-                                aria-haspopup="true"
-                                aria-expanded="true"
-                            >
-                                <div className="category">
-                                    <div className="category-business"></div>
-                                    <div className="category-social"></div>
-                                    <div className="category-important"></div>
-                                    <span className="more-options text-dark">
-                                        <i className="icon-options-vertical"></i>
-                                    </span>
-                                </div>
-                            </a>
-                            <div className="dropdown-menu dropdown-menu-right category-menu">
-                                <a
-                                    className="note-business badge-group-item badge-business dropdown-item position-relative category-business text-success"
-                                    href="javascript:void(0);"
-                                >
-                                    <i className="mdi mdi-checkbox-blank-circle-outline mr-1"></i>
-                                    Business
-                                </a>
-                                <a
-                                    className="note-social badge-group-item badge-social dropdown-item position-relative category-social text-info"
-                                    href="javascript:void(0);"
-                                >
-                                    <i className="mdi mdi-checkbox-blank-circle-outline mr-1"></i>{" "}
-                                    Social
-                                </a>
-                                <a
-                                    className="note-important badge-group-item badge-important dropdown-item position-relative category-important text-danger"
-                                    href="javascript:void(0);"
-                                >
-                                    <i className="mdi mdi-checkbox-blank-circle-outline mr-1"></i>{" "}
-                                    Important
-                                </a>
-                            </div>
-                        </div>
-                    </div>
                 </div>
             </div>
         </div>
