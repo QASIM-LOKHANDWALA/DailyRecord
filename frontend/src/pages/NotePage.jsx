@@ -9,21 +9,17 @@ import { useState } from "react";
 import axios from "axios";
 import { formatDate } from "../utils/FormatDate";
 
-const NotePage = () => {
+const NotePage = ({ fetchNote }) => {
     const [note, setNote] = useState({});
     const { slug } = useParams();
     useEffect(() => {
-        async function fetchNote() {
-            try {
-                const response = await axios.get(
-                    `http://127.0.0.1:8000/api/v1/notes/${slug}`
-                );
-                setNote(response.data);
-            } catch (error) {
-                console.log(error);
-            }
+        async function getData() {
+            const data = await fetchNote(slug);
+            console.log(data);
+
+            setNote(data);
         }
-        fetchNote();
+        getData();
     }, [slug]);
 
     return (
@@ -39,7 +35,10 @@ const NotePage = () => {
                     </p>
                 </span>
                 <span className="button-group">
-                    <Link to="/edit-note" className="btn btn-primary">
+                    <Link
+                        to={`/edit-note/${note.slug}`}
+                        className="btn btn-primary"
+                    >
                         <FiEdit />
                         <span>Edit</span>
                     </Link>
@@ -48,9 +47,7 @@ const NotePage = () => {
                         <span>Delete</span>
                     </button>
                 </span>
-                <p className="description">
-                    {note.body}
-                </p>
+                <p className="description">{note.body}</p>
             </div>
             <Modal />
         </>
