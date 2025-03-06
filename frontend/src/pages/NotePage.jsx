@@ -4,23 +4,41 @@ import { BiSolidTrashAlt } from "react-icons/bi";
 import { FiEdit } from "react-icons/fi";
 import Modal from "../components/Modal";
 import "./NotePage.css";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { useState } from "react";
 import axios from "axios";
 import { formatDate } from "../utils/FormatDate";
+import { toast } from "react-toastify";
 
 const NotePage = ({ fetchNote }) => {
+    const [modalOpen, setModalOpen] = useState(false);
     const [note, setNote] = useState({});
     const { slug } = useParams();
+    const navigate = useNavigate();
+
     useEffect(() => {
         async function getData() {
             const data = await fetchNote(slug);
             console.log(data);
-
             setNote(data);
         }
         getData();
     }, [slug]);
+
+    const deleteNote = async () => {
+        try {
+            const response = await axios.delete(
+                `http://127.0.0.1:8000/api/v1/notes/${slug}/`
+            );
+            toast.success("Note Deleted!");
+            setModalOpen(false);
+            navigate("/");
+        } catch (error) {
+            console.log(error);
+            toast.error(error.message);
+            setModalOpen(false);
+        }
+    };
 
     return (
         <>
@@ -42,14 +60,19 @@ const NotePage = ({ fetchNote }) => {
                         <FiEdit />
                         <span>Edit</span>
                     </Link>
-                    <button className="btn btn-danger">
+                    <button
+                        className="btn btn-danger"
+                        onClick={(e) => setModalOpen(true)}
+                    >
                         <BiSolidTrashAlt />
                         <span>Delete</span>
                     </button>
                 </span>
                 <p className="description">{note.body}</p>
             </div>
-            <Modal />
+            {modalOpen && (
+                <Modal setModalOpen={setModalOpen} deleteNote={deleteNote} />
+            )}
         </>
     );
 };
