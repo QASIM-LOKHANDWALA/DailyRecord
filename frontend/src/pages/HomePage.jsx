@@ -7,6 +7,20 @@ import { useState, useEffect } from "react";
 const HomePage = () => {
     const [notes, setNotes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
+    const [filterText, setFilterText] = useState("");
+
+    const handelFilterText = (val) => {
+        setFilterText(val);
+    };
+
+    const filteredNotes =
+        filterText == "BUSINESS"
+            ? notes.filter((note) => note.category == "BUSINESS")
+            : filterText == "PERSONAL"
+            ? notes.filter((note) => note.category == "PERSONAL")
+            : filterText == "IMPORTANT"
+            ? notes.filter((note) => note.category == "IMPORTANT")
+            : notes;
 
     useEffect(() => {
         const fetchData = async () => {
@@ -27,7 +41,7 @@ const HomePage = () => {
     }, []);
     return (
         <>
-            <Filter />
+            <Filter handelFilterText={handelFilterText} />
             {isLoading ? (
                 <div className="text-center">
                     <div
@@ -39,10 +53,10 @@ const HomePage = () => {
                         }}
                     ></div>
                 </div>
-            ) : notes.length > 0 ? (
-                <CardContainer notes={notes} />
+            ) : filteredNotes.length > 0 ? (
+                <CardContainer notes={filteredNotes} />
             ) : (
-                <h2>No notes found</h2>
+                <h2 className="container text-center mt-4">No notes found</h2>
             )}
         </>
     );

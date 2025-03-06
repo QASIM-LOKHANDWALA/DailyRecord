@@ -13,6 +13,7 @@ import EditNotePage from "./pages/EditNotePage";
 import axios from "axios";
 
 const App = () => {
+
     async function fetchNote(slug) {
         try {
             const response = await axios.get(
@@ -28,7 +29,7 @@ const App = () => {
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path="/" element={<MainLayout />}>
-                <Route index element={<HomePage />} />
+                <Route index element={<HomePage  />} />
                 <Route path="/add-notes" element={<AddNotePage />} />
                 <Route
                     path="/edit-note/:slug"

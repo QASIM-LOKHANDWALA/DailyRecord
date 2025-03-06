@@ -1,16 +1,20 @@
 import React from "react";
 
-const Filter = () => {
+const Filter = ({ handelFilterText }) => {
     return (
         <div
             className="container"
             style={{ width: "500px", margin: "20px auto" }}
         >
-            <select className="form-select" style={{ height: "50px" }}>
+            <select
+                className="form-select"
+                style={{ height: "50px" }}
+                onChange={(e) => handelFilterText(e.target.value)}
+            >
                 <option value="">All Notes</option>
-                <option value="1">Business</option>
-                <option value="2">Personal</option>
-                <option value="3">Important</option>
+                <option value="BUSINESS">Business</option>
+                <option value="PERSONAL">Personal</option>
+                <option value="IMPORTANT">Important</option>
             </select>
         </div>
     );
