@@ -1,7 +1,10 @@
 import { FaSquarePlus } from "react-icons/fa6";
 import { Link } from "react-router-dom";
+import { useSearch } from "../context/SearchContext";
 
 const NavBar = () => {
+    const { searchText, setSearchText } = useSearch();
+
     return (
         <nav
             className="navbar bg-body-tertiary py-50"
@@ -21,6 +24,8 @@ const NavBar = () => {
                             type="search"
                             placeholder="Search"
                             aria-label="Search"
+                            value={searchText}
+                            onChange={(e) => setSearchText(e.target.value)}
                         />
                         <button
                             className="btn btn-outline-success"

@@ -3,15 +3,34 @@ import axios from "axios";
 import Filter from "../components/Filter";
 import CardContainer from "../components/CardContainer";
 import { useState, useEffect } from "react";
+import { toast } from "react-toastify";
+import { useSearch } from "../context/SearchContext";
 
 const HomePage = () => {
     const [notes, setNotes] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
     const [filterText, setFilterText] = useState("");
+    const { searchText, setSearchText } = useSearch();
 
     const handelFilterText = (val) => {
         setFilterText(val);
     };
+
+    useEffect(() => {
+        async function getSearchData() {
+            try {
+                const response = await axios.get(
+                    `http://127.0.0.1:8000/api/v1/notes/value/search/?search=${searchText}`
+                );
+                setNotes(response.data);
+            } catch (error) {
+                console.log(error);
+                toast.error(error.message);
+            }
+        }
+        getSearchData();
+        console.log("getSearchData");
+    }, [searchText]);
 
     const filteredNotes =
         filterText == "BUSINESS"

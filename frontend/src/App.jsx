@@ -11,25 +11,25 @@ import AddNotePage from "./pages/AddNotePage";
 import NotePage from "./pages/NotePage";
 import EditNotePage from "./pages/EditNotePage";
 import axios from "axios";
+import { SearchProvider } from "./context/SearchContext";
 
 const App = () => {
-
     async function fetchNote(slug) {
         try {
             const response = await axios.get(
                 `http://127.0.0.1:8000/api/v1/notes/${slug}`
             );
             console.log(response);
-
             return response.data;
         } catch (error) {
             console.log(error);
         }
     }
+
     const router = createBrowserRouter(
         createRoutesFromElements(
             <Route path="/" element={<MainLayout />}>
-                <Route index element={<HomePage  />} />
+                <Route index element={<HomePage />} />
                 <Route path="/add-notes" element={<AddNotePage />} />
                 <Route
                     path="/edit-note/:slug"
@@ -43,7 +43,11 @@ const App = () => {
         )
     );
 
-    return <RouterProvider router={router} />;
+    return (
+        <SearchProvider>
+            <RouterProvider router={router} />
+        </SearchProvider>
+    );
 };
 
 export default App;
