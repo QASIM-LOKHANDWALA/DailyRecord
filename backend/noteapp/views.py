@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.db.models import Q
 
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
@@ -45,3 +46,11 @@ def noteDetailView(request, slug):
     elif request.method == 'DELETE':
         note.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+
+@api_view(['GET'])
+def searchView(request):
+    query = request.query_params.get("search")
+    print(query)
+    notes = Note.objects.filter(Q(title__icontains=query) |Q(body__icontains=query) |Q(category__icontains=query))
+    serializer = NoteSerializer(notes, many=True)
+    return Response(serializer.data, status=status.HTTP_200_OK)
